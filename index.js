@@ -1,3 +1,9 @@
+/**
+ * Plugin for SurveyMonkey code highlight
+ * Last update: 03.03.2020 9:22
+ */
+
+
 const $mainContainer = "#livePreview .rteToolbarContainer";
 const customClData = "data-coderslab-plugin";
 const notSelector = `not([${customClData}])`;
