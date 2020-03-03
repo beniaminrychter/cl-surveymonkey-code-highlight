@@ -98,6 +98,7 @@ function codeFormatButton(e) {
         }
       });
     }
+    
 
     /**
      * Find input of selected text
@@ -106,8 +107,9 @@ function codeFormatButton(e) {
      */
     const $input = $btn.parentElement.querySelector(".rte");
     let inputText = $input.innerText;
-    const finalHTML = inputText.replace(selectedText, resultHtml.outerHTML);
-    $input.innerHTML = finalHTML;
+    const finalHTML = inputText.replace(selectedText, "");
+   
+    $input.innerHTML += "\n\n" + resultHtml.outerHTML;
   }
 }
 
