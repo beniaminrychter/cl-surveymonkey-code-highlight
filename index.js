@@ -3,7 +3,6 @@
  * Last update: 03.03.2020 9:22
  */
 
-
 const $mainContainer = "#livePreview .rteToolbarContainer";
 const customClData = "data-coderslab-plugin";
 const notSelector = `not([${customClData}])`;
@@ -15,21 +14,21 @@ const styles = {
   ".hljs-comment,.hljs-quote": { color: "#998", fontStyle: "italic" },
   ".hljs-keyword,.hljs-selector-tag,.hljs-subst": {
     color: "#333",
-    fontWeight: "bold"
+    fontWeight: "bold",
   },
   ".hljs-number,.hljs-literal,.hljs-variable,.hljs-template-variable,.hljs-tag .hljs-attr": {
-    color: "teal"
+    color: "teal",
   },
   ".hljs-string,.hljs-doctag": { color: "#d14" },
   ".hljs-title,.hljs-section,.hljs-selector-id": {
     color: "#900",
-    fontWeight: "bold"
+    fontWeight: "bold",
   },
   ".hljs-subst": { fontWeight: "normal" },
   ".hljs-type,.hljs-class .hljs-title": { color: "#458", fontWeight: "bold" },
   ".hljs-tag,.hljs-name,.hljs-attribute": {
     color: "navy",
-    fontWeight: "normal"
+    fontWeight: "normal",
   },
   ".hljs-regexp,.hljs-link": { color: "#009926" },
   ".hljs-symbol,.hljs-bullet": { color: "#990073" },
@@ -38,7 +37,7 @@ const styles = {
   ".hljs-deletion": { background: "#fdd" },
   ".hljs-addition": { background: "#dfd" },
   ".hljs-emphasis": { fontStyle: "italic" },
-  ".hljs-strong": { fontWeight: "bold" }
+  ".hljs-strong": { fontWeight: "bold" },
 };
 
 /**
@@ -51,7 +50,7 @@ function findInputs() {
       `${$mainContainer} .rte[id*=editTitle]:${notSelector}, ${$mainContainer} .rte[id*=newChoice]:${notSelector}`
     );
 
-    $inputs.forEach($input => {
+    $inputs.forEach(($input) => {
       $input.setAttribute(customClData, true);
       createButtons($input.parentElement);
     });
@@ -66,7 +65,7 @@ function findInputs() {
  */
 function createButtons(parentElement) {
   const btns = ["HTML", "JS", "CSS", "SCSS", "Java", "Python", "SQL"];
-  btns.forEach(btn => {
+  btns.forEach((btn) => {
     const $btn = document.createElement("a");
     $btn.href = "#";
     $btn.innerText = btn;
@@ -98,13 +97,12 @@ function codeFormatButton(e) {
     // Add styles to elements [style attr]
     for (let query in styles) {
       const style = styles[query];
-      resultHtml.querySelectorAll(query).forEach(el => {
+      resultHtml.querySelectorAll(query).forEach((el) => {
         for (let prop in style) {
           el.style[prop] = style[prop];
         }
       });
     }
-    
 
     /**
      * Find input of selected text
@@ -114,7 +112,7 @@ function codeFormatButton(e) {
     const $input = $btn.parentElement.querySelector(".rte");
     let inputText = $input.innerText;
     const finalHTML = inputText.replace(selectedText, "");
-   
+
     $input.innerHTML += "\n\n" + resultHtml.outerHTML;
   }
 }
@@ -150,3 +148,38 @@ function getSelText() {
 // Init
 findInputs();
 document.addEventListener("click", codeFormatButton);
+
+/**
+ * Add ID column to MySurvey tab
+ */
+function findTable() {
+  const $table = $(".surveys");
+
+  if ($table.size() === 0) {
+    return;
+  }
+
+  addHeadToTable($table);
+  addDataToTable($table);
+  addEventsToTable($table);
+}
+findTable();
+
+function addHeadToTable($table) {
+  $table.find("thead th").eq(1).after("<th>ID</th>");
+}
+
+function addDataToTable($table) {
+  $table.find("tbody tr").each(function () {
+    $(this)
+      .find("td")
+      .eq(1)
+      .after(`<td>${$(this).attr("id")}</td>`);
+  });
+}
+
+function addEventsToTable($table) {
+  $(".my-surveys-content .pager-buttons .wds-button").on("click", function () {
+    setTimeout(() => addDataToTable($table), 2000);
+  });
+}
