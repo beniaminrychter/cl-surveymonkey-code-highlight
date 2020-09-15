@@ -159,9 +159,9 @@ function findTable() {
     return;
   }
 
+  addObserverToTable($table);
   addHeadToTable($table);
   addDataToTable($table);
-  addEventsToTable($table);
 }
 findTable();
 
@@ -178,8 +178,20 @@ function addDataToTable($table) {
   });
 }
 
-function addEventsToTable($table) {
-  $(".my-surveys-content .pager-buttons .wds-button").on("click", function () {
-    setTimeout(() => addDataToTable($table), 2000);
+function addObserverToTable($table) {
+  const target = $table.get(0);
+
+  const observer = new MutationObserver((mutations) => {
+    mutations.forEach((mutation) => {
+      if (mutation.addedNodes.length && mutation.addedNodes[0].tagName === "TBODY") {
+        addDataToTable($table);
+      }
+    });
+  });
+
+  observer.observe(target, {
+    childList: true,
+    subtree: true,
+    characterData: true,
   });
 }
